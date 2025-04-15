@@ -9,7 +9,7 @@
 ## Back of envelop estimation
 
 - Urls per second generated: 100M / 3600 / 24 = 1160
-- Read operation R: 1160 * R per second. if R is 10 => 11600 reads per second
+- Read operation R: 1160 * R per second. if R is 10 => 11600 reads per second. This estimation based on assumption that we have 1:R ratio of writes to reads. 10 arbitrary number is was chosen at random
 - Amount of records: if service runs for 10 years 10*365*100m = 365B
 - Assume avg url is 100 char long
 - storage requirements is 365B * 100 bytes = 36.5TB (urls only no meta data)
@@ -47,7 +47,7 @@ It can also include analytics like views
 
 ## URL encoding function(hash function)
 
-Encoded value consist of [0-9a-zA-Z] => 62 possible characters. Which gives > 62^n diff values, where n is length of the short URl. 'more than' because 62 goesn't include empty characters so /0 or /1 is not included in the 62^n.
+Encoded value consist of [0-9a-zA-Z] => 62 possible characters. Which gives > 62^n diff values, where n is length of the short URl. 'more than' because 62 doesn't include empty characters so /0 or /1 is not included in the 62^n. To avoid predictability some of this can be twicked: url needs to be at least 3 char.
 Another concideration can be made to exclude characters which looks the same as LliI0O => 58 characters allowed, this increases usability but decrease amount of the urls we can generate
 For the current requirement we need to find the smallest n which sutisfies 365B reconds. anything equal or more than 5 should sutisfy the requirement. 62^5 ~ 916B.
 
